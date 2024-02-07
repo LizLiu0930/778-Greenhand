@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Food Recommendation System</title>
+</head>
+<body>
+<h2>Food Recommendation System</h2>
+<form id="recommendationForm">
+    Number of items:
+    <select name="number_of_items">
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+    </select><br>
+    Basic food:
+    <select name="basic_food">
+        <option value="whole milk">Whole milk</option>
+        <option value="yogurt">Yogurt</option>
+        <option value="rolls/buns">Rolls/buns</option>
+        <option value="oranges">Oranges</option>
+        <option value="apples">Apples</option>
+        <option value="bananas">Bananas</option>
+        <option value="potatoes">Potatoes</option>
+        <option value="chicken">Chicken</option>
+        <option value="broccoli">Broccoli</option>
+        <option value="lettuces">Lettuces</option>
+        <option value="beef">Beef</option>
+    </select><br>
+    Nutrition:
+    <select name="nutrition">
+        <option value="Cholesterol">Cholesterol</option>
+        <option value="Sugar">Sugar</option>
+        <option value="Fat">Fat</option>
+        <option value="Protein">Protein</option>
+        <option value="Calcium">Calcium</option>
+        <option value="Iron">Iron</option>
+        <option value="Zinc">Zinc</option>
+        <option value="Potassium">Potassium</option>
+        <option value="Vitamin C">Vitamin C</option>
+        <option value="Vitamin E">Vitamin E</option>
+        <option value="Energy (kJ/100g)">Energy(kJ)</option>
+    </select><br>
+    <button type="button" onclick="getRecommendations()">Get Recommendations</button>
+</form>
+<div id="recommendations"></div>
+<div id="totalNutrients"></div>
+<div id="percentDailyValues"></div> 
+
+
+<script>
+function getRecommendations() {
+    var form = document.getElementById('recommendationForm');
+    var formData = new FormData(form);
+
+    fetch('/recommend', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        // 使用从 Flask 接收的列标题来构建表格
+        var tableHtml = '<table><tr>';
+        data.columns.forEach(function(column) {
+            tableHtml += '<th>' + column + '</th>';
+        });
+        tableHtml += '</tr>';
+
+        // 添加行数据
+        data.table_data.forEach(function(row) {
+            tableHtml += '<tr>';
+            row.forEach(function(cell) {
+                tableHtml += '<td>' + cell + '</td>';
+            });
+            tableHtml += '</tr>';
+        });
+        tableHtml += '</table>';
+
+        // 显示表格和总营养值
+        document.getElementById('recommendations').innerHTML = tableHtml;
+        var nutrientValueHtml = "<p>Total " + formData.get('nutrition') + " in Recommended Items: " + data.total_nutrient_value + "</p>";
+        document.getElementById('recommendations').innerHTML += nutrientValueHtml;
+        
+        // Display the percent daily values
+        var percentValuesHtml = '<h3>Percent Daily Values</h3><table>';
+        percentValuesHtml += '<tr><th>Nutrition</th><th>Value</th><th>% Daily Value</th></tr>';
+        data.percent_daily_values.forEach(function(entry) {
+            percentValuesHtml += `<tr><td>${entry.Nutrition}</td><td>${entry.Value}</td><td>${entry['% Daily Value']}</td></tr>`;
+        });
+        percentValuesHtml += '</table>';
+        document.getElementById('percentDailyValues').innerHTML = percentValuesHtml;
+   
+        
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+</script>
+
+</body>
+</html>

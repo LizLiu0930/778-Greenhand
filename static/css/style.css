@@ -1,0 +1,61 @@
+<style>
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: #f4f4f4;
+    }
+
+    .container {
+        width: 40%; 
+        background-color: #fff;
+        margin: auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        color: #333;
+    }
+    form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    select, button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-sizing: border-box; /* Makes sure the padding doesn't affect the final width */
+    }
+    button {
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    table {
+        width: 80%;
+        margin: auto;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+
+</style>

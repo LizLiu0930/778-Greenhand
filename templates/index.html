@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Food Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-<h2>Food Recommendation System</h2>
+<div class="container">
+
+<h2>Greenhand</h2>
 <form id="recommendationForm">
     Number of items:
     <select name="number_of_items">
@@ -32,9 +35,10 @@
     </select><br>
     Nutrition:
     <select name="nutrition">
-        <option value="Cholesterol">Cholesterol</option>
         <option value="Sugar">Sugar</option>
-        <option value="Fat">Fat</option>
+        <option value="Total Fat">Total Fat</option>
+        <option value="Saturated Fat">Saturated Fat</option>
+        <option value="Cholesterol">Cholesterol</option>
         <option value="Protein">Protein</option>
         <option value="Calcium">Calcium</option>
         <option value="Iron">Iron</option>
@@ -43,6 +47,12 @@
         <option value="Vitamin C">Vitamin C</option>
         <option value="Vitamin E">Vitamin E</option>
         <option value="Energy (kJ/100g)">Energy(kJ)</option>
+        <option value="Sodium">Sodium</option>
+        <option value="Vitamin D">Vitamin D</option>
+        <option value="Vitamin B6">Vitamin B6</option>
+        <option value="Magnesium">Magnesium</option>
+        <option value="Carbohydrate">Carbohydrate</option>
+        <option value="Fibre">Fibre</option>
     </select><br>
     <button type="button" onclick="getRecommendations()">Get Recommendations</button>
 </form>
@@ -54,6 +64,9 @@
 function getRecommendations() {
     var form = document.getElementById('recommendationForm');
     var formData = new FormData(form);
+    
+    var timestamp = new Date().getTime();
+    var url = '/recommend?timestamp=' + timestamp;
 
     fetch('/recommend', {
         method: 'POST',
@@ -84,7 +97,7 @@ function getRecommendations() {
         document.getElementById('recommendations').innerHTML += nutrientValueHtml;
         
         // Display the percent daily values
-        var percentValuesHtml = '<h3>Percent Daily Values</h3><table>';
+        var percentValuesHtml = '<h3>Percent Daily Values in Recommended Items</h3><table>';
         percentValuesHtml += '<tr><th>Nutrition</th><th>Value</th><th>% Daily Value</th></tr>';
         data.percent_daily_values.forEach(function(entry) {
             percentValuesHtml += `<tr><td>${entry.Nutrition}</td><td>${entry.Value}</td><td>${entry['% Daily Value']}</td></tr>`;
@@ -98,6 +111,6 @@ function getRecommendations() {
 }
 
 </script>
-
+</div>
 </body>
 </html>

@@ -174,3 +174,26 @@ def calculate_percent_daily_value(total_nutrients):
                 '% Daily Value': f"{round(percent_daily_value, 2)}%"
             })
     return pd.DataFrame(nutrient_values)
+
+
+def plot_percent_daily_values(percent_daily_values):
+    df_copy = percent_daily_values.copy()
+    df_copy['% Daily Value'] = df_copy['% Daily Value'].str.replace('%', '').astype(float)
+    plt.figure(figsize=(8, 6))
+    bars = plt.barh(df_copy['Nutrition'], df_copy['% Daily Value'], color='skyblue')
+    plt.axvline(100, color='r', linestyle='--', label='100% Daily Value')
+    for bar, value in zip(bars, df_copy['% Daily Value']):
+        plt.text(value, bar.get_y() + bar.get_height() / 2, 
+                 f"{value:.1f}%", 
+                 va='center', ha='left')
+    plt.xlabel('% Daily Value')
+    plt.title('% Daily Value of Nutrients')
+    plt.legend()
+    plt.tight_layout()
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)  
+    plt.close()
+    img_base64 = base64.b64encode(img.getvalue()).decode('utf-8')
+    print("img_base64" + img_base64)  
+    return img_base64

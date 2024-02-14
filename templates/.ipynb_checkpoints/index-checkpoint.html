@@ -2,59 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Food Recommendation System</title>
+    <meta name="author" content="HHY">
+    <meta name="description" content="Food Recommendation System">
+    <script src="Script.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>FOOD MYSTERY BOX</title>
+    <style>
+        body {
+            background-image: url('../static/imag/Background.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed; 
+            margin: 0; 
+        }
+
+    </style>
 </head>
+    
 <body>
 <div class="container">
+	<h2><strong>GreenHand</strong></h2>
+	<form id="recommendationForm">
+   		<h3>Number of items</h3>
+  			<select name="number_of_items">
+        		<option value="5">5</option>
+        		<option value="6">6</option>
+        		<option value="7">7</option>
+        		<option value="8">8</option>
+        		<option value="9">9</option>
+        		<option value="10">10</option>
+    		</select><br>
 
-<h2>Greenhand</h2>
-<form id="recommendationForm">
-    Number of items:
-    <select name="number_of_items">
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-    </select><br>
-    Basic food:
-    <select name="basic_food">
-        <option value="whole milk">Whole milk</option>
-        <option value="yogurt">Yogurt</option>
-        <option value="rolls/buns">Rolls/buns</option>
-        <option value="oranges">Oranges</option>
-        <option value="apples">Apples</option>
-        <option value="bananas">Bananas</option>
-        <option value="potatoes">Potatoes</option>
-        <option value="chicken">Chicken</option>
-        <option value="broccoli">Broccoli</option>
-        <option value="lettuces">Lettuces</option>
-        <option value="beef">Beef</option>
-    </select><br>
-    Nutrition:
-    <select name="nutrition">
-        <option value="Sugar">Sugar</option>
-        <option value="Total Fat">Total Fat</option>
-        <option value="Saturated Fat">Saturated Fat</option>
-        <option value="Cholesterol">Cholesterol</option>
-        <option value="Protein">Protein</option>
-        <option value="Calcium">Calcium</option>
-        <option value="Iron">Iron</option>
-        <option value="Zinc">Zinc</option>
-        <option value="Potassium">Potassium</option>
-        <option value="Vitamin C">Vitamin C</option>
-        <option value="Vitamin E">Vitamin E</option>
-        <option value="Energy (kJ/100g)">Energy(kJ)</option>
-        <option value="Sodium">Sodium</option>
-        <option value="Vitamin D">Vitamin D</option>
-        <option value="Vitamin B6">Vitamin B6</option>
-        <option value="Magnesium">Magnesium</option>
-        <option value="Carbohydrate">Carbohydrate</option>
-        <option value="Fibre">Fibre</option>
-    </select><br>
-    <button type="button" onclick="getRecommendations()">Get Recommendations</button>
+    	<h3>Basic food</h3>
+	    	<select name="basic_food">
+	        	<option value="whole milk">Whole milk</option>
+	        	<option value="yogurt">Yogurt</option>
+	        	<option value="rolls/buns">Rolls/buns</option>
+	        	<option value="oranges">Oranges</option>
+	        	<option value="apples">Apples</option>
+	        	<option value="bananas">Bananas</option>
+	        	<option value="potatoes">Potatoes</option>
+	        	<option value="chicken">Chicken</option>
+	        	<option value="broccoli">Broccoli</option>
+	        	<option value="lettuces">Lettuces</option>
+	        	<option value="beef">Beef</option>
+	    	</select><br>
+   	 
+   	 	<h3>Nutrition</h3>
+	    	<select name="nutrition">
+	        	<option value="Sugar">Sugar</option>
+	        	<option value="Total Fat">Total Fat</option>
+	        	<option value="Saturated Fat">Saturated Fat</option>
+	        	<option value="Cholesterol">Cholesterol</option>
+	        	<option value="Protein">Protein</option>
+	        	<option value="Calcium">Calcium</option>
+	        	<option value="Iron">Iron</option>
+	        	<option value="Zinc">Zinc</option>
+	        	<option value="Potassium">Potassium</option>
+	        	<option value="Vitamin C">Vitamin C</option>
+	        	<option value="Vitamin E">Vitamin E</option>
+	        	<option value="Energy (kJ/100g)">Energy(kJ)</option>
+	        	<option value="Sodium">Sodium</option>
+	        	<option value="Vitamin D">Vitamin D</option>
+	        	<option value="Vitamin B6">Vitamin B6</option>
+	        	<option value="Magnesium">Magnesium</option>
+	        	<option value="Carbohydrate">Carbohydrate</option>
+	        	<option value="Fibre">Fibre</option>
+	    	</select><br>
+	    	
+   	 <button type="button" onclick="getRecommendations()">Open Your Mystery Box!</button>
 </form>
 <div id="recommendations"></div>
 <div id="totalNutrients"></div>
@@ -64,9 +80,6 @@
 function getRecommendations() {
     var form = document.getElementById('recommendationForm');
     var formData = new FormData(form);
-    
-    var timestamp = new Date().getTime();
-    var url = '/recommend?timestamp=' + timestamp;
 
     fetch('/recommend', {
         method: 'POST',
@@ -97,7 +110,7 @@ function getRecommendations() {
         document.getElementById('recommendations').innerHTML += nutrientValueHtml;
         
         // Display the percent daily values
-        var percentValuesHtml = '<h3>Percent Daily Values in Recommended Items</h3><table>';
+        var percentValuesHtml = '<h3>Percent Daily Values</h3><table>';
         percentValuesHtml += '<tr><th>Nutrition</th><th>Value</th><th>% Daily Value</th></tr>';
         data.percent_daily_values.forEach(function(entry) {
             percentValuesHtml += `<tr><td>${entry.Nutrition}</td><td>${entry.Value}</td><td>${entry['% Daily Value']}</td></tr>`;
@@ -111,6 +124,7 @@ function getRecommendations() {
 }
 
 </script>
-</div>
+
+    </div>
 </body>
 </html>

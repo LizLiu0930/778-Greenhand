@@ -56,5 +56,11 @@ def recommend():
     return jsonify(response_data)
 
 
+@app.route('/show-nutrients-chart')
+def show_nutrients_chart():
+    img_base64 = rs.plot_percent_daily_values(percent_daily_values)
+    return render_template('index.html', img_base64=img_base64)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
